@@ -1,0 +1,500 @@
+Aim: Inheritance in solidity
+...........................................................................................
+
+////////////////////Single Inheritance:///////////////////////////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract Animal {
+    function makeSound() public pure virtual returns (string memory) {
+        return "Some sound";
+    }
+}
+
+contract Dog is Animal {
+    function makeSound() public pure override returns (string memory) {
+        return "Woof!";
+    }
+}
+
+
+
+////////////////////Multiple Inheritance:////////////////////////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract Animal {
+    function makeSound() public pure virtual returns (string memory) {
+        return "Some sound";
+    }
+}
+
+contract Mammal {
+    function giveBirth() public pure virtual returns (string memory) {
+        return "Giving birth to live young ones";
+    }}
+
+contract Dog is Animal, Mammal {
+    function makeSound() public pure override returns (string memory) {
+        return "Woof!";
+    }
+}
+
+
+
+///////////////////////Multilevel Inheritance:////////////////////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract Animal {
+    function makeSound() public pure virtual returns (string memory) {
+        return "Some sound";
+    }
+}
+
+contract Mammal is Animal {
+    function giveBirth() public pure virtual returns (string memory) {
+        return "Giving birth to live young ones";
+    }
+}
+
+contract Dog is Mammal {
+    function makeSound() public pure override returns (string memory) {
+        return "Woof!";
+    }
+}
+
+
+
+
+...........................................................................................
+Aim: Program to demonstrate different visibility 
+...........................................................................................
+
+pragma solidity ^0.8.0;
+ 
+contract VisibilityExample {
+    uint256 public publicNumber;
+    uint256 internal internalNumber;
+    uint256 private privateNumber;
+    
+    constructor(uint256 _initialValue) {
+        publicNumber = _initialValue;
+        internalNumber = _initialValue;
+        privateNumber = _initialValue;
+    }
+    
+    function setPublicNumber(uint256 _newValue) public {
+        publicNumber = _newValue;
+    }
+    
+    function setInternalNumber(uint256 _newValue) internal {
+        internalNumber = _newValue;
+    }
+    
+    function setPrivateNumber(uint256 _newValue) private {
+        privateNumber = _newValue;
+    }
+    
+    function getInternalNumber() external view returns (uint256) {
+        return internalNumber;
+    }
+    
+    function getPrivateNumber() external view returns (uint256) {
+        return privateNumber;
+    }
+}
+
+
+...........................................................................................
+Aim : Program to define event in solidity
+...........................................................................................
+pragma solidity ^0.8.0;
+ 
+contract EventExample {
+    event LogEvent(address indexed sender, uint256 value);
+ 
+    function triggerEvent(uint256 _value) public {
+        emit LogEvent(msg.sender, _value);
+    }
+}
+
+
+
+...........................................................................................
+Aim: Program to demonstrate exception handling
+...........................................................................................
+/////////////////////////Using require and Custom Error Messages://///////////////////////
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function divide(uint256 _numerator, uint256 _denominator) public pure returns (uint256) {
+        require(_denominator != 0, "Division by zero is not allowed");
+        return _numerator / _denominator;
+    }
+}
+
+
+/////////////////////Using revert with Custom Error Messages://////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function divide(uint256 _numerator, uint256 _denominator) public pure returns (uint256) {
+        if (_denominator == 0) {
+            revert("Division by zero is not allowed");
+        }
+        return _numerator / _denominator;}}
+
+
+/////////////////////////Using assert://///////////////////////////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function assertExample(uint256 _value) public pure returns (uint256) {
+        uint256 result = _value * 2;
+        assert(result >= _value); // Assertion check
+        return result;
+    }
+}
+
+
+
+
+...........................................................................................
+Aim: Program to demonstrate exception handling
+...........................................................................................
+///////////////////////////////Using require and Custom Error Messages://////////////////
+
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function divide(uint256 _numerator, uint256 _denominator) public pure returns (uint256) {
+        require(_denominator != 0, "Division by zero is not allowed");
+        return _numerator / _denominator;
+    }
+}
+
+/////////////////////////////////Using revert with Custom Error Messages://///////////////
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function divide(uint256 _numerator, uint256 _denominator) public pure returns (uint256) {
+        if (_denominator == 0) {
+            revert("Division by zero is not allowed");
+        }
+        return _numerator / _denominator;}}
+
+
+////////////////////Using assert://////////////////////////////////////////////////////
+
+pragma solidity ^0.8.0;
+
+contract ExceptionExample {
+    function assertExample(uint256 _value) public pure returns (uint256) {
+        uint256 result = _value * 2;
+        assert(result >= _value); // Assertion check
+        return result;
+    }
+}
+
+
+
+
+
+
+...........................................................................................
+Aim: Contract to transfer currency
+...........................................................................................
+pragma solidity ^0.8.0;
+ 
+contract SimpleToken {
+    // State variables
+    string public name;
+    string public symbol;
+    uint256 public totalSupply;
+    mapping(address => uint256) public balances;
+ 
+    // Events
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+ 
+    // Constructor
+    constructor(string memory _name, string memory _symbol, uint256 _initialSupply) {
+        name = _name;
+        symbol = _symbol;
+        totalSupply = _initialSupply;
+        balances[msg.sender] = _initialSupply;
+    }
+ 
+    // Function to transfer tokens
+    function transfer(address _to, uint256 _value) public returns (bool) {
+        require(_value <= balances[msg.sender], "Insufficient balance");
+        require(_to != address(0), "Invalid recipient address");
+ 
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+ 
+        emit Transfer(msg.sender, _to, _value);
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+...........................................................................................
+Aim: Program to implement todo list
+...........................................................................................
+out/put : task session: Buy groceries
+        : toggleCompleted : toggleCompleted(1)
+ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+pragma solidity ^0.8.0;
+ 
+contract TodoList {
+    struct Task {
+        uint256 id;
+        string content;
+        bool completed;
+    }
+ 
+    uint256 public taskCount;
+    mapping(uint256 => Task) public tasks;
+ 
+    event TaskCreated(uint256 id, string content, bool completed);
+    event TaskCompleted(uint256 id, bool completed);
+ 
+    function createTask(string memory _content) public {
+        taskCount++;
+        tasks[taskCount] = Task(taskCount, _content, false);
+        emit TaskCreated(taskCount, _content, false);
+    }
+ 
+    function toggleCompleted(uint256 _id) public {
+        Task storage task = tasks[_id];
+        task.completed = !task.completed;
+        emit TaskCompleted(_id, task.completed);
+    }
+}
+
+
+
+
+
+
+...........................................................................................
+Aim: Chat application using solidity
+...........................................................................................
+for out/put :   0x742d35Cc6634C0532925a3b844Bc454e4438f44e
+ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+pragma solidity ^0.8.0;
+ 
+contract ChatContract {
+    struct Message {
+        address sender;
+        address receiver;
+        string ipfsHash; // IPFS hash of the actual message content
+    }
+ 
+    mapping(address => mapping(address => Message[])) private messages;
+ 
+    event MessageSent(address indexed sender, address indexed receiver, string ipfsHash);
+ 
+    function sendMessage(address _receiver, string memory _ipfsHash) public {
+        Message memory newMessage = Message(msg.sender, _receiver, _ipfsHash);
+        messages[msg.sender][_receiver].push(newMessage);
+        messages[_receiver][msg.sender].push(newMessage);
+        emit MessageSent(msg.sender, _receiver, _ipfsHash);
+    }
+ 
+    function getMessages(address _receiver) public view returns (Message[] memory) {
+        return messages[msg.sender][_receiver];
+    }
+}
+
+
+
+
+
+
+
+...........................................................................................
+Aim: Blockchain implementation using java
+...........................................................................................
+import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+ 
+class Block {
+    private int index;
+    private long timestamp;
+    private String data;
+    private String previousHash;
+    private String hash;
+ 
+    public Block(int index, long timestamp, String data, String previousHash) {
+        this.index = index;
+        this.timestamp = timestamp;
+        this.data = data;
+        this.previousHash = previousHash;
+        this.hash = calculateHash();
+    }
+ 
+    public String calculateHash() {
+        String dataToHash = index + timestamp + data + previousHash;
+        StringBuilder hash = new StringBuilder();
+ 
+        try {
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = sha256.digest(dataToHash.getBytes());
+ for (byte b : bytes) {
+                hash.append(String.format("%02x", b));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hash.toString();
+    }
+}
+ 
+class Blockchain {
+    private ArrayList<Block> blocks;
+ 
+    public Blockchain() {
+        blocks = new ArrayList<>();
+        // Genesis block
+        Block genesisBlock = new Block(0, System.currentTimeMillis(), "Genesis Block", "0");
+        blocks.add(genesisBlock);
+    }
+ 
+    public void addBlock(String data) {
+        Block previousBlock = blocks.get(blocks.size() - 1);
+        Block newBlock = new Block(previousBlock.getIndex() + 1, System.currentTimeMillis(), data, previousBlock.getHash());
+        blocks.add(newBlock);
+    }
+ 
+    public boolean isChainValid() {
+        for (int i = 1; i < blocks.size(); i++) {
+Block currentBlock = blocks.get(i);
+            Block previousBlock = blocks.get(i - 1);
+ 
+            // Check if hashes are valid
+            if (!currentBlock.getHash().equals(currentBlock.calculateHash()) || !currentBlock.getPreviousHash().equals(previousBlock.getHash())) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+ 
+public class Main {
+    public static void main(String[] args) {
+        Blockchain blockchain = new Blockchain();
+        blockchain.addBlock("Transaction 1");
+        blockchain.addBlock("Transaction 2");
+ 
+        System.out.println("Blockchain is valid: " + blockchain.isChainValid());
+ 
+        // Tamper with the blockchain
+        blockchain.blocks.get(1).setData("Modified Transaction");
+        System.out.println("Blockchain is valid: " + blockchain.isChainValid());
+    }
+}
+
+
+
+
+
+
+
+...........................................................................................
+Aim :Program Implementation of Blockchain using javascript
+...........................................................................................
+const SHA256 = require('crypto-js/sha256');
+ 
+class Block {
+    constructor(index, timestamp, data, previousHash = '') {
+        this.index = index;
+        this.timestamp = timestamp;
+        this.data = data;
+        this.previousHash = previousHash;
+        this.hash = this.calculateHash();
+    }
+ 
+    calculateHash() {
+        return SHA256(this.index + this.timestamp + this.data + this.previousHash).toString();
+    }
+}
+ 
+class Blockchain {
+    constructor() {
+        this.chain = [this.createGenesisBlock()];
+    }
+ 
+    createGenesisBlock() {
+        return new Block(0, '01/01/2021', 'Genesis Block', '0');
+    }
+ 
+    getLatestBlock() {
+        return this.chain[this.chain.length - 1];
+    }
+ 
+    addBlock(newBlock) {
+        newBlock.previousHash = this.getLatestBlock().hash;
+        newBlock.hash = newBlock.calculateHash();
+        this.chain.push(newBlock);
+    }
+ 
+    isChainValid() {
+        for (let i = 1; i < this.chain.length; i++) {
+            const currentBlock = this.chain[i];
+            const previousBlock = this.chain[i - 1];
+ 
+            if (currentBlock.hash !== currentBlock.calculateHash() || currentBlock.previousHash !== previousBlock.hash) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+ 
+// Usage
+let myBlockchain = new Blockchain();
+myBlockchain.addBlock(new Block(1, '02/01/2021', 'Transaction 1'));
+myBlockchain.addBlock(new Block(2, '03/01/2021', 'Transaction 2'));
+ 
+console.log('Blockchain is valid? ' + myBlockchain.isChainValid());
+// Tampering with the blockchain
+myBlockchain.chain[1].data = 'Modified Transaction';
+console.log('Blockchain is valid? ' + myBlockchain.isChainValid());
+
+
+
+
+
+
+
+...........................................................................................
+Aim: Server creation using Node js
+..........................................................................................
+var http = require('http');
+
+//create a server object:
+http.createServer(function (req, res) {
+  res.write('Hello World!'); //write a response to the client
+  res.end(); //end the response
+}).listen(8080); //the server object listens on port 8080
+
+
+
