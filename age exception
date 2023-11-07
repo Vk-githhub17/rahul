@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract AgeExceptionContract {
+    uint256 public minimumAge;
+    mapping(address => uint256) public ages;
+
+    event AgeSet(address indexed account, uint256 age);
+
+    constructor(uint256 _minimumAge) {
+        minimumAge = _minimumAge;
+    }
+
+    modifier aboveMinimumAge(uint256 _age) {
+        require(_age >= minimumAge, "Age below minimum");
+        _;
+    }
+
+    function setAge(uint256 _age) external aboveMinimumAge(_age) {
+        ages[msg.sender] = _age;
+        emit AgeSet(msg.sender, _age);
+    }
+
+    function getAge() external view returns (uint256) {
+        return ages[msg.sender];
+    }
+}
