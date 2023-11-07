@@ -1,0 +1,11 @@
+practical-8 
+   javac filename.java
+   java filename
+
+practical-9
+   npm install crypto-js
+   node filename.js
+
+practical-10
+   node filename.js
+   localhost8080
